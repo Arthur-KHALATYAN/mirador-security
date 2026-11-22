@@ -125,6 +125,9 @@ fun Activity.screen(): LinearLayout {
 
 /** Barres système transparentes, icônes claires ou foncées selon le thème. */
 private fun Activity.applySystemBars() {
+    // Crée la fenêtre si ce n'est pas encore fait : sinon insetsController plante
+    // sur les écrans qui n'ont encore rien touché à leur fenêtre (ex. le guide).
+    window.decorView
     if (Build.VERSION.SDK_INT >= 30) {
         // Android 15+ : bord à bord par défaut ; avant, on l'active nous-mêmes
         if (Build.VERSION.SDK_INT < 35) {
