@@ -19,7 +19,7 @@ object SecurityScore {
             ScoreItem("Verrouillage de l'écran", 15, audit("Verrouillage de l'écran"), settings(checks["Verrouillage de l'écran"]?.fixAction)),
             ScoreItem("Contrôle des liens actif", 15, DeviceAudit.isDefaultBrowser(c), open(MainActivity::class.java)),
             ScoreItem("Aucune appli à risque élevé", 10, Store.notifiedDanger(c).isEmpty(), open(ScanActivity::class.java)),
-            ScoreItem("Mises à jour de sécurité récentes", 8, audit("Mises à jour de sécurité"), settings(checks["Mises à jour de sécurité"]?.fixAction)),
+            ScoreItem(PATCH, 8, audit("Mises à jour de sécurité"), settings(checks["Mises à jour de sécurité"]?.fixAction)),
             ScoreItem("Téléphone non rooté", 7, audit("Root"), null),
             ScoreItem("Débogage USB désactivé", 5, audit("Débogage USB"), settings(checks["Débogage USB"]?.fixAction)),
             ScoreItem("Filtre DNS actif", 8, DnsVpnService.running, open(DnsActivity::class.java)),
@@ -29,8 +29,10 @@ object SecurityScore {
             ScoreItem("Alertes messageries (WhatsApp…)", 5, Store.msgEnabled(c) && MessageGuardService.isEnabled(c), open(SmsScanActivity::class.java)),
             ScoreItem("Surveillance micro / caméra", 5, Store.monitorEnabled(c), open(SensorLogActivity::class.java)),
             ScoreItem("Bases de menaces à jour", 5, fresh, open(SettingsActivity::class.java)),
-        )
+        ).filterNot { it.title == PATCH && checks["Mises à jour de sécurité"]?.accepted == true }
     }
+
+    const val PATCH = "Mises à jour de sécurité récentes"
 
     fun score(items: List<ScoreItem>): Int = items.filter { it.ok }.sumOf { it.points } * 100 / items.sumOf { it.points }
 }

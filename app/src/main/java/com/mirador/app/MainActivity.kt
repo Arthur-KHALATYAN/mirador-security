@@ -127,7 +127,8 @@ class MainActivity : GuardedActivity() {
                 setPadding(dp(10), dp(4), dp(10), dp(4))
                 todo.take(4).forEachIndexed { i, item ->
                     if (i > 0) divider()
-                    row(R.drawable.ic_add, Ui.ACCENT_TEXT, item.title, "+${item.points} points", onClick = item.action?.let { a -> { safeStart(a) } })
+                    val click: (() -> Unit)? = if (item.title == SecurityScore.PATCH) ({ patchDialog() }) else item.action?.let { a -> { safeStart(a) } }
+                    row(R.drawable.ic_add, Ui.ACCENT_TEXT, item.title, "+${item.points} points", onClick = click)
                 }
             }
         }
@@ -240,12 +241,18 @@ class MainActivity : GuardedActivity() {
             DeviceAudit.run(ctx).forEachIndexed { i, chk ->
                 if (i > 0) divider()
                 val a = chk.fixAction
+                val isPatch = chk.title == "Mises à jour de sécurité"
                 row(
-                    if (chk.ok) R.drawable.ic_check_circle else R.drawable.ic_warning,
-                    if (chk.ok) Verdict.SAFE.solid else Verdict.CAUTION.solid, chk.title,
+                    when { chk.ok -> R.drawable.ic_check_circle; chk.accepted -> R.drawable.ic_help; else -> R.drawable.ic_warning },
+                    when { chk.ok -> Verdict.SAFE.solid; chk.accepted -> Ui.MUTED; else -> Verdict.CAUTION.solid }, chk.title,
                     if (chk.ok) null else chk.detail,
-                    if (chk.ok) Ui.TEXT else Verdict.CAUTION.color,
-                    onClick = if (!chk.ok && a != null) ({ safeStart(Intent(a)) }) else null,
+                    when { chk.ok -> Ui.TEXT; chk.accepted -> Ui.TEXT; else -> Verdict.CAUTION.color },
+                    onClick = when {
+                        chk.ok -> null
+                        isPatch -> ({ patchDialog() })
+                        a != null -> ({ safeStart(Intent(a)) })
+                        else -> null
+                    },
                 )
             }
         }
@@ -282,5 +289,34 @@ class MainActivity : GuardedActivity() {
             }
         }
         safeStart(Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS))
+    }
+
+    /** Mises à jour de sécurité : chercher une mise à jour, ou signaler un vieux téléphone qui n'en reçoit plus. */
+    private fun patchDialog() {
+        val patch = Build.VERSION.SECURITY_PATCH
+        val accepted = Store.noUpdatesPatch(this) == patch
+        val advice = "Pour compenser :\n" +
+            "• gardez le contrôle des liens et le filtre DNS actifs ;\n" +
+            "• n'installez que des applis du Play Store ;\n" +
+            "• mettez à jour Chrome et « Android System WebView » depuis le Play Store ;\n" +
+            "• évitez les Wi-Fi publics ;\n" +
+            "• si possible, une ROM alternative (ex. LineageOS) peut prolonger les mises à jour."
+        val b = android.app.AlertDialog.Builder(this).setTitle("Mises à jour de sécurité")
+        if (accepted) {
+            b.setMessage("Vous avez indiqué que ce téléphone ne reçoit plus de mises à jour (correctif du $patch).\n\n$advice")
+                .setPositiveButton("Fermer", null)
+                .setNeutralButton("Annuler ce choix") { _, _ -> Store.setNoUpdatesPatch(this, null); render() }
+        } else {
+            b.setMessage("Dernier correctif installé : $patch.\n\nCherchez d'abord une mise à jour dans Paramètres > Mise à jour logicielle. " +
+                "Si votre téléphone n'en reçoit plus (modèle trop ancien), indiquez-le : ce point ne comptera plus dans le score.")
+                .setPositiveButton("Chercher une mise à jour") { _, _ -> safeStart(Intent(Settings.ACTION_SETTINGS)) }
+                .setNeutralButton("Plus de mises à jour") { _, _ ->
+                    Store.setNoUpdatesPatch(this, patch)
+                    render()
+                    android.app.AlertDialog.Builder(this).setTitle("C'est noté").setMessage(advice).setPositiveButton("OK", null).showTr()
+                }
+                .setNegativeButton("Annuler", null)
+        }
+        b.showTr()
     }
 }

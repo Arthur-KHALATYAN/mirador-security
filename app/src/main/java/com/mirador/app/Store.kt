@@ -84,6 +84,10 @@ object Store {
     fun setDnsEnabled(c: Context, v: Boolean) = putBool(c, "dns", v)
     fun monitorEnabled(c: Context) = bool(c, "monitor", false)
     fun setMonitorEnabled(c: Context, v: Boolean) = putBool(c, "monitor", v)
+    /** Correctif de sécurité que l'utilisateur sait ne plus pouvoir mettre à jour (vieux téléphone). */
+    fun noUpdatesPatch(c: Context): String? = p(c).getString("noUpdatesPatch", null)
+    fun setNoUpdatesPatch(c: Context, patch: String?) =
+        p(c).edit().apply { if (patch == null) remove("noUpdatesPatch") else putString("noUpdatesPatch", patch) }.apply()
     fun askedNotif(c: Context) = bool(c, "askedNotif", false)
     fun setAskedNotif(c: Context) = putBool(c, "askedNotif", true)
 

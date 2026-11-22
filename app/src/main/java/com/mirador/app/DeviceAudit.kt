@@ -14,7 +14,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-data class Check(val ok: Boolean, val title: String, val detail: String, val fixAction: String? = null)
+data class Check(val ok: Boolean, val title: String, val detail: String, val fixAction: String? = null, val accepted: Boolean = false)
 
 object DeviceAudit {
 
@@ -64,11 +64,19 @@ object DeviceAudit {
             (System.currentTimeMillis() - d.time) / 86_400_000L
         }.getOrNull()
         val upToDate = ageDays != null && ageDays <= 180
+        // Vieux téléphone sans mises à jour : l'utilisateur l'a signalé pour CE correctif
+        // (si une mise à jour arrive un jour, la date change et l'alerte normale revient)
+        val noUpdates = !upToDate && Store.noUpdatesPatch(c) == patch
         out += Check(
             upToDate, "Mises à jour de sécurité",
             "Dernier correctif : $patch" + (ageDays?.let { " (il y a $it jours)" } ?: "") +
-                if (upToDate) "." else " — installez les mises à jour système, des failles connues ne sont pas corrigées.",
+                when {
+                    upToDate -> "."
+                    noUpdates -> " — ce téléphone ne reçoit plus de mises à jour. Soyez prudent avec les liens et les applis hors Play Store."
+                    else -> " — installez les mises à jour système, des failles connues ne sont pas corrigées."
+                },
             Settings.ACTION_SETTINGS,
+            accepted = noUpdates,
         )
 
         val acc = Settings.Secure.getString(cr, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES).orEmpty()
