@@ -1,0 +1,25 @@
+# Android Studio / Gradle
+.gradle/
+.kotlin/
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+*.iml
+.idea/
+local.properties
+
+# Fichiers compilés et signatures
+*.apk
+*.aab
+*.jks
+*.keystore
+*.p12
+
+# Secrets éventuels
+google-services.json
+*.env
+
+# Système
+.DS_Store
+Thumbs.db

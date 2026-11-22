@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="android:Theme.Material.NoActionBar">
+        <item name="android:colorPrimary">#8FA8FF</item>
+        <item name="android:colorPrimaryDark">#0E1116</item>
+        <item name="android:colorAccent">#8FA8FF</item>
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:editTextStyle">@style/Input</item>
+        <item name="android:alertDialogTheme">@style/Dialog</item>
+    </style>
+
+    <style name="Dialog" parent="android:Theme.Material.Dialog.Alert">
+        <item name="android:colorAccent">#8FA8FF</item>
+        <item name="android:editTextStyle">@style/Input</item>
+    </style>
+</resources>

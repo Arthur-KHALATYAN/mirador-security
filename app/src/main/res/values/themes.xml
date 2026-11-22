@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorPrimary">#2F5BEA</item>
+        <item name="android:colorPrimaryDark">#F4F6FB</item>
+        <item name="android:colorAccent">#2F5BEA</item>
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:editTextStyle">@style/Input</item>
+        <item name="android:alertDialogTheme">@style/Dialog</item>
+    </style>
+
+    <style name="Input" parent="android:Widget.Material.EditText">
+        <item name="android:background">@drawable/input_bg</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:minHeight">52dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textColorHint">@color/muted</item>
+    </style>
+
+    <style name="Dialog" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorAccent">#2F5BEA</item>
+        <item name="android:editTextStyle">@style/Input</item>
+    </style>
+</resources>

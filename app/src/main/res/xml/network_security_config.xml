@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Le http non chiffré reste permis UNIQUEMENT pour suivre les redirections
+         des liens http que l'utilisateur veut vérifier (requêtes HEAD, aucune donnée envoyée). -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- Services utilisés par Mirador : https obligatoire. -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">googleapis.com</domain>
+        <domain includeSubdomains="true">pwnedpasswords.com</domain>
+        <domain includeSubdomains="true">githubusercontent.com</domain>
+        <domain includeSubdomains="true">openphish.com</domain>
+        <domain includeSubdomains="true">abuse.ch</domain>
+    </domain-config>
+</network-security-config>
