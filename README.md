@@ -22,6 +22,7 @@ Appli Android open source qui protège contre les liens piégés, les arnaques p
 | **Code PIN** | Code ou empreinte pour ouvrir Mirador et changer les protections. |
 | **Presse-papiers** | Propose de vérifier un lien copié à l'ouverture de l'appli. |
 | **Permissions** | Qui a accès au micro, à la localisation, aux SMS… + accès spéciaux. |
+| **Qui est sur mon Wi-Fi ?** | Liste les appareils connectés au réseau (box, téléphones, TV, imprimantes, objets connectés) via mDNS, UPnP et sondage des ports ; signale les caméras, les nouveaux appareils et les services risqués (Telnet, FTP). |
 | **Wi-Fi** | Alerte si le Wi-Fi est ouvert, en WEP ou public (Android 12+). |
 | **Mot de passe piraté** | Have I Been Pwned, sans envoyer le mot de passe. |
 | **Raccourcis** | Boutons « Scan anti-spy » et « Filtre DNS » dans les réglages rapides + widget. |

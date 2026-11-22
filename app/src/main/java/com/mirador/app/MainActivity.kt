@@ -223,6 +223,8 @@ class MainActivity : GuardedActivity() {
         c.label("Outils", 18f, true, top = 18)
         c.card().apply {
             setPadding(dp(10), dp(4), dp(10), dp(4))
+            row(R.drawable.ic_wifi, 0xFF14B8A6.toInt(), "Qui est sur mon Wi-Fi ?", "Appareils connectés, caméras, nouveaux venus") { open(WifiActivity::class.java) }
+            divider()
             row(R.drawable.ic_key, 0xFF6366F1.toInt(), "Permissions des applis", "Qui a accès au micro, à la position, aux SMS…") { open(PermissionsActivity::class.java) }
             divider()
             row(R.drawable.ic_phone_forward, 0xFF0EA5E9.toInt(), "Renvoi d'appels", "Vos appels sont-ils détournés ?") { open(CallForwardActivity::class.java) }

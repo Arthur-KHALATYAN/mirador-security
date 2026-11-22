@@ -4,6 +4,9 @@
 
     <!-- Redirections, Safe Browsing, liste DNS -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- « Qui est sur mon Wi-Fi ? » : réseau local et annonces des appareils (mDNS / UPnP) -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <!-- Scan de toutes les applis installées (anti-spy) -->
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
@@ -98,6 +101,7 @@
         <activity android:name=".TrackerActivity" android:exported="false" android:label="Traqueurs Bluetooth" />
         <activity android:name=".CallForwardActivity" android:exported="false" android:label="Renvoi d'appels" />
         <activity android:name=".OnboardingActivity" android:exported="false" android:label="Mirador" />
+        <activity android:name=".WifiActivity" android:exported="false" android:label="Qui est sur mon Wi-Fi ?" />
         <activity android:name=".GuideActivity" android:exported="false" android:label="Je pense être espionné(e)" />
         <!-- « Ouvrir avec Mirador » depuis un gestionnaire de fichiers pour vérifier un APK -->
         <activity

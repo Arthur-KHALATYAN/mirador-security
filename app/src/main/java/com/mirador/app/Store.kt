@@ -88,6 +88,9 @@ object Store {
     fun noUpdatesPatch(c: Context): String? = p(c).getString("noUpdatesPatch", null)
     fun setNoUpdatesPatch(c: Context, patch: String?) =
         p(c).edit().apply { if (patch == null) remove("noUpdatesPatch") else putString("noUpdatesPatch", patch) }.apply()
+    /** Appareils déjà vus sur un réseau Wi-Fi (null = réseau jamais analysé). */
+    fun wifiSeen(c: Context, net: String): Set<String>? = "wifiSeen:$net".let { if (p(c).contains(it)) set(c, it) else null }
+    fun setWifiSeen(c: Context, net: String, keys: Set<String>) = putSet(c, "wifiSeen:$net", keys.take(500).toSet())
     fun askedNotif(c: Context) = bool(c, "askedNotif", false)
     fun setAskedNotif(c: Context) = putBool(c, "askedNotif", true)
 
